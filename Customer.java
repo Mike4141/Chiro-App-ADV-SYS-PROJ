@@ -1,5 +1,6 @@
 package systemsproject;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,11 +12,6 @@ import java.sql.Statement;
  *Systems Project
  */
 public class Customer {
-
-    private int CustID, CustPW, CustZip;
-    private String CustFN, CustLN, CustEmail;
-    private String CustAddr, CustCity, CustState;
-    private long CustPhone;
    
 /*****************
  *Creating all the Business
@@ -23,20 +19,25 @@ public class Customer {
  * get and set methods.
  */
     
-    public Customer() {
-        CustID = 0;
-        CustPW = 0;
-        CustPhone = 0;
+    private String CustID, CustPW, CustZip;
+    private String CustFN, CustLN, CustEmail;
+    private String CustAddr, CustCity, CustState;
+    private String CustPhone;
+    
+public Customer() {
+        CustID = "";
+        CustPW = "";
+        CustPhone = "";
         CustFN = "";
         CustLN = "";
         CustAddr = "";
         CustCity="";
-        CustZip = 0;
+        CustZip = "";
         CustCity = "";
         CustState = "";
         CustEmail = "";
     }
-    public Customer(int id, int pw, String fn, String ln, String addr, String city, int zip, String state, long phone, String email) {
+    public Customer(String id, String pw, String fn, String ln, String addr, String city, String zip, String state, String phone, String email) {
         CustID = id;
         CustPW = pw;
         CustPhone = phone;
@@ -49,20 +50,20 @@ public class Customer {
         CustEmail = email;
     }
     
-    public void setCustID(int id) {CustID=id;}
-    public int getCustID() {return CustID;}
-    public void setCustPW(int pw) {CustPW=pw;}
-    public int getCustPW() {return CustPW;}
-    public void setCustPhone(long phone) {CustPhone=phone;}
-    public long getCustPhone() {return CustPhone;}
+    public void setCustID(String id) {CustID=id;}
+    public String getCustID() {return CustID;}
+    public void setCustPW(String pw) {CustPW=pw;}
+    public String getCustPW() {return CustPW;}
+    public void setCustPhone(String phone) {CustPhone=phone;}
+    public String getCustPhone() {return CustPhone;}
     public void setCustFN(String fn) {CustFN=fn;}
     public String getCustFN() {return CustFN;}
     public void setCustLN(String ln) {CustLN=ln;}
     public String getCustLN() {return CustLN;}
     public void setCustAddr(String addr) {CustAddr=addr;}
     public String getCustAddr() {return CustAddr;}
-    public void setCustZip(int zip) {CustZip=zip;}
-    public int getCustZip() {return CustZip;}
+    public void setCustZip(String zip) {CustZip=zip;}
+    public String getCustZip() {return CustZip;}
     public void setCustCity(String city) {CustCity=city;}
     public String getCustCity() {return CustCity;}
     public void setCustState(String state) {CustState=state;}
@@ -78,7 +79,7 @@ public class Customer {
  * update methods.
  */
     
-    public void SelectDB(int id) {
+    public void SelectDB(String id) {
         CustID = id;
     try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
@@ -93,15 +94,15 @@ public class Customer {
                 ResultSet rs;
                 rs = stmt.executeQuery(sql);
                 rs.next();
-                setCustID(rs.getInt(1));
-                setCustPW(rs.getInt(2));
+                setCustID(rs.getString(1));
+                setCustPW(rs.getString(2));
                 setCustFN(rs.getString(3));
                 setCustLN(rs.getString(4));
                 setCustAddr(rs.getString(5));
-                setCustZip(rs.getInt(10));
+                setCustZip(rs.getString(10));
                 setCustCity(rs.getString(8));
                 setCustState(rs.getString(9));
-                setCustPhone(rs.getLong(6));
+                setCustPhone(rs.getString(6));
                 setCustEmail(rs.getString(7));
                 con.close();
     }
@@ -111,7 +112,8 @@ public class Customer {
     
     }
     
-    public void insertDB(int id, int pw, String fn, String ln, String addr, String city, int zip, String state, long phone, String email) {
+    
+    public void insertDB(String id, String pw, String fn, String ln, String addr, String city, String zip, String state, String phone, String email) {
         CustID = id;
         CustPW = pw;
         CustPhone = phone;
@@ -184,7 +186,7 @@ public class Customer {
                                             " CustZip = '"+getCustZip()+"',"+
                                             " CustState = '"+getCustState()+"',"+
                                             " CustEmail = '"+getCustEmail()+"',"+
-                                            " CustPhone = "+getCustPhone()+
+                                            " CustPhone = "+getCustPhone()+"'"+
                                             " where CustID= '"+getCustID()+"'";
             System.out.println(sql);
             int n = stmt.executeUpdate(sql);
@@ -220,26 +222,10 @@ public class Customer {
  */
     public static void main(String[] args) {
         Customer  c1 = new Customer();
-        c1.SelectDB(3000);
+        c1.SelectDB("3000");
         c1.display();
         
-        Customer c2 = new Customer();
-        c2.insertDB(3009, 1229, "Jeff", "B", "121 Harbor Street", "Acworth", 30102,  "GA", 6782222222L, "jeffbehrens@gmail.com");
-        c2.display();
         
-        Customer c4 = new Customer();
-        c4.SelectDB(3009);
-        c4.setCustPW(4094);
-        c4.setCustFN("Henry");
-        c4.setCustLN("Lewis");
-        c4.setCustAddr("120 Fall creek ave");
-        c4.setCustCity("Helen");
-        c4.setCustZip(30065);
-        c4.setCustState("GA");
-        c4.setCustPhone(4043732091L);
-        c4.setCustEmail("lewisH@gmail.com");
-        c4.updateDB();
-        c4.display();
     
     }
 }
