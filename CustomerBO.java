@@ -1,4 +1,4 @@
-package systemsproject;
+package business;
 
 
 import java.sql.Connection;
@@ -11,7 +11,7 @@ import java.sql.Statement;
  *CustAccts
  *Systems Project
  */
-public class Customer {
+public class CustomerBO {
    
 /*****************
  *Creating all the Business
@@ -19,34 +19,27 @@ public class Customer {
  * get and set methods.
  */
     
-    private String CustID, CustPW, CustZip;
+    private String CustID, CustPW;
     private String CustFN, CustLN, CustEmail;
-    private String CustAddr, CustCity, CustState;
+    private String CustAddr;
     private String CustPhone;
     
-public Customer() {
+public CustomerBO() {
         CustID = "";
         CustPW = "";
         CustPhone = "";
         CustFN = "";
         CustLN = "";
         CustAddr = "";
-        CustCity="";
-        CustZip = "";
-        CustCity = "";
-        CustState = "";
         CustEmail = "";
     }
-    public Customer(String id, String pw, String fn, String ln, String addr, String city, String zip, String state, String phone, String email) {
+    public CustomerBO(String id, String pw, String fn, String ln, String addr, String phone, String email) {
         CustID = id;
         CustPW = pw;
         CustPhone = phone;
         CustFN = fn;
         CustLN = ln;
         CustAddr = addr;
-        CustZip = zip;
-        CustCity= city;
-        CustState=state;
         CustEmail = email;
     }
     
@@ -62,12 +55,6 @@ public Customer() {
     public String getCustLN() {return CustLN;}
     public void setCustAddr(String addr) {CustAddr=addr;}
     public String getCustAddr() {return CustAddr;}
-    public void setCustZip(String zip) {CustZip=zip;}
-    public String getCustZip() {return CustZip;}
-    public void setCustCity(String city) {CustCity=city;}
-    public String getCustCity() {return CustCity;}
-    public void setCustState(String state) {CustState=state;}
-    public String getCustState() {return CustState;}
     public void setCustEmail(String email) {CustEmail=email;}
     public String getCustEmail() {return CustEmail;}
     
@@ -84,7 +71,7 @@ public Customer() {
     try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             
-            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.accdb");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.mdb");
             System.out.println("DB Connected");
             
             Statement stmt = con.createStatement();
@@ -98,12 +85,10 @@ public Customer() {
                 setCustPW(rs.getString(2));
                 setCustFN(rs.getString(3));
                 setCustLN(rs.getString(4));
-                setCustAddr(rs.getString(5));
-                setCustZip(rs.getString(10));
-                setCustCity(rs.getString(8));
-                setCustState(rs.getString(9));
-                setCustPhone(rs.getString(6));
-                setCustEmail(rs.getString(7));
+                setCustAddr(rs.getString(5));                
+                setCustPhone(rs.getString(7));
+                setCustEmail(rs.getString(6));
+                
                 con.close();
     }
         catch(Exception e) {
@@ -113,20 +98,17 @@ public Customer() {
     }
     
     
-    public void insertDB(String id, String pw, String fn, String ln, String addr, String city, String zip, String state, String phone, String email) {
+    public void insertDB(String id, String pw, String fn, String ln, String addr, String phone, String email) {
         CustID = id;
         CustPW = pw;
         CustPhone = phone;
         CustFN = fn;
         CustLN = ln;
         CustAddr = addr;
-        CustZip = zip;
-        CustCity= city;
-        CustState=state;
         CustEmail = email;
         try{
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.accdb");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.mdb");
             
             Statement stmt = con.createStatement();
             String sql = "Insert into Customers values('"+getCustID()+"',"+
@@ -134,9 +116,6 @@ public Customer() {
                                                       "'"+getCustFN()+"',"+
                                                       "'"+getCustLN()+"',"+
                                                       "'"+getCustAddr()+"',"+
-                                                      "'"+getCustCity()+"',"+
-                                                      "'"+getCustZip()+"',"+
-                                                      "'"+getCustState()+"',"+
                                                       "'"+getCustEmail()+"',"+
                                                         getCustPhone()+")"; 
             System.out.println(sql);
@@ -155,7 +134,7 @@ public Customer() {
     public void deleteDB(){
         try{
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.accdb");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.mdb");
             
             Statement stmt = con.createStatement();
             String sql = "Delete from Customers where CustID='"+getCustID()+"'";
@@ -175,18 +154,15 @@ public Customer() {
     public void updateDB(){
         try{
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.accdb");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.mdb");
             
             Statement stmt = con.createStatement();
             String sql = "Update Customers set CustPW = '"+getCustPW() +"',"+
                                             " CustFN = '"+getCustFN()+"',"+
                                             " CustLN = '"+getCustLN()+"',"+
                                             " CustAddr = '"+getCustAddr()+"',"+
-                                            " CustCity = '"+getCustCity()+"',"+
-                                            " CustZip = '"+getCustZip()+"',"+
-                                            " CustState = '"+getCustState()+"',"+
                                             " CustEmail = '"+getCustEmail()+"',"+
-                                            " CustPhone = "+getCustPhone()+"'"+
+                                            " CustPhone = "+getCustPhone()+""+
                                             " where CustID= '"+getCustID()+"'";
             System.out.println(sql);
             int n = stmt.executeUpdate(sql);
@@ -207,9 +183,6 @@ public Customer() {
         System.out.println("Customer FirstName        = " + getCustFN());
         System.out.println("Customer LastName         = " + getCustLN());
         System.out.println("Customer Address          = " + getCustAddr());
-        System.out.println("Customer Zipcode          = " + getCustZip());
-        System.out.println("Customer City             = " + getCustCity());
-        System.out.println("Customer State            = " + getCustState());
         System.out.println("Customer Phonenumber      = " + getCustPhone());
         System.out.println("Customer Email            = " + getCustEmail());
         System.out.println("=============================");
@@ -221,9 +194,30 @@ public Customer() {
  * and their validity.
  */
     public static void main(String[] args) {
-        Customer  c1 = new Customer();
+        CustomerBO  c1 = new CustomerBO();
         c1.SelectDB("3000");
         c1.display();
+        
+        /*CustomerBO c2 = new CustomerBO();
+        c2.insertDB("3010", "1229", "Jeff", "B", "121 Harbor Street", "6782222222", "jeffbehrens@gmail.com");
+        c2.display();
+        */
+        
+        CustomerBO c3 = new CustomerBO();
+        c3.SelectDB("3010");
+        c3.deleteDB();
+        
+        /*CustomerBO c4 = new CustomerBO();
+        c4.SelectDB("3010");
+        c4.setCustPW("4094");
+        c4.setCustFN("Henry");
+        c4.setCustLN("Lewis");
+        c4.setCustAddr("120 Fall creek ave");
+        c4.setCustPhone("4043732091");
+        c4.setCustEmail("lewisH@gmail.com");
+        c4.updateDB();
+        c4.display();
+        */
         
         
     
