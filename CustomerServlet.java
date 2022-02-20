@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,15 +39,9 @@ public class CustomerServlet extends HttpServlet {
             String CustPW = c1.getCustPW();
                      
             if (CustID.equals(ID)&&CustPW.equals(PW)) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>LoginServletDB</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Login Servlet Running...</h1>");
-            out.println("</body>");
-            out.println("</html>");
+                RequestDispatcher rd = request.getRequestDispatcher("clienthomepage.html");
+                    rd.include(request, response);
+                    
             } else if (!CustID.equals(ID)|| !CustPW.equals(PW)){
             out.println("<!DOCTYPE html>");
             out.println("<html>");
