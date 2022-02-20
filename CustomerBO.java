@@ -71,7 +71,7 @@ public CustomerBO() {
     try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             
-            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/jeffe/Desktop/Systems Project/MariettaSpineClinicMDB.mdb");
+            Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/victo/Desktop/Files/Spring2022/Advance Systems Project/DataBase/MariettaSpineClinicMDB.mdb");
             System.out.println("DB Connected");
             
             Statement stmt = con.createStatement();
