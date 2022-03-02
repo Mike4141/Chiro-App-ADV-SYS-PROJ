@@ -1,0 +1,265 @@
+/**********************************
+ * Written by Christopher Sywak
+ *********************************/
+
+
+package business;
+
+import java.sql.*; 
+
+public class ChiroBO {
+
+    private String id, pw, fName, lName, phone, email;
+    CustomerList cList = new CustomerList();
+    AppointmentList aList = new AppointmentList();
+    public ChiroBO() {
+        id = "";
+        pw = "";
+        fName = "";
+        lName = "";
+        phone = "";
+        email = "";
+    } 
+    public ChiroBO(String ID, String password, String firstName, String lastName, String Phone, String Email) {
+        id = ID;
+        pw = password;
+        fName = firstName;
+        lName = lastName;
+        phone = Phone;
+        email = Email; 
+    }
+    
+    public void setChiroId(String i) {
+        id = i; 
+    }
+    public String getChiroId(){
+        return id; 
+    }
+    
+    public void setChrioPw(String pas)  {
+        pw = pas;
+    }
+    public String getChiroPw(){
+        return pw;
+    }
+
+    public void setChiroFn(String fn) {
+        fName = fn;
+    }
+    public String getChiroFn(){
+        return fName;
+    }
+
+    public void setChiroLn(String ln) {
+        lName = ln;
+    }
+    public String getChiroLn(){
+        return lName;
+    }
+
+    public void setChiroPhone(String n) {
+        phone = n;
+    }
+    public String getChiroPhone() {
+        return phone;
+    }
+
+    public void setChiroEmail(String e) {
+        email = e;
+    }
+    public String getChiroEmail() {
+        return email;
+    }
+    
+    /******************************
+     * selects a chiropractor from the database 
+     * 
+     *******************************/
+
+    public void selectDB(String i) {
+        id = i;
+        try {
+                String databaseURL = "jdbc:ucanaccess://C:/Users/csywa/OneDrive/Desktop/System Project Source/Chiro-App-ADV-SYS-PROJ-f0206791a8aa6767c7ca9e9118731ac6bfa9d26f/MariettaSpineClinicMDB.accdb";
+                Connection con = DriverManager.getConnection(databaseURL) ;
+                System.out.println("first step db connection");
+                Statement stmt = con.createStatement();
+                ResultSet rs;
+                System.out.println("DB Connected");
+                String sql = "select * from Chiropractors where ChiroID ='"+i+"'";
+                System.out.println(sql);
+                rs = stmt.executeQuery(sql);
+                rs.next();
+                setChiroId(rs.getString(1));
+                setChrioPw(rs.getString(2));
+                setChiroFn(rs.getString(3));
+                setChiroLn(rs.getString(4));
+                setChiroPhone(rs.getString(5));
+                setChiroEmail(rs.getString(6));
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    /******************************************
+     * insert adds a new chiropractor to the database 
+     * 
+     *****************************************/
+    
+    
+    
+    public void insertDB(String ID, String PW, String Fn, String Ln, String Phone, String Email) {
+        id = ID;
+        pw = PW;
+        fName = Fn;
+        lName = Ln;
+        phone = Phone;
+        email = Email;
+        
+        try {
+            
+            String databaseURL = "jdbc:ucanaccess://C:/Users/csywa/OneDrive/Desktop/System Project Source/Chiro-App-ADV-SYS-PROJ-f0206791a8aa6767c7ca9e9118731ac6bfa9d26f/MariettaSpineClinicMDB.accdb";
+            Connection con = DriverManager.getConnection(databaseURL) ;
+            System.out.println("first step db connection");
+            Statement stmt = con.createStatement();
+            ResultSet rs;
+            System.out.println("DB Connected");
+            String sql = "Insert into Chiropractors values('"+getChiroId()+"',"+ 
+                                                      "'"+getChiroPw()+"',"+ 
+                                                      "'"+getChiroFn()+"',"+
+                                                      "'"+getChiroLn()+"',"+
+                                                      "'"+getChiroPhone()+"',"+
+                                                      "'"+getChiroEmail()+"')";
+            System.out.println(sql);
+            stmt.execute(sql);
+            
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }  
+    }
+    
+    /********************************************
+     * Delete removes a chiropractors information from the database
+     * 
+     ********************************************/
+    
+    public void deleteBO() {
+        try {                       
+            String databaseURL = "jdbc:ucanaccess://C:/Users/csywa/OneDrive/Desktop/System Project Source/Chiro-App-ADV-SYS-PROJ-f0206791a8aa6767c7ca9e9118731ac6bfa9d26f/MariettaSpineClinicMDB.accdb";
+            Connection con = DriverManager.getConnection(databaseURL) ;
+            System.out.println("Delete Connected");
+            Statement stmt = con.createStatement();
+            String sql = "Delete from Chiropractors where ChiroID='"+getChiroId()+"'";
+            stmt.execute(sql);
+            con.close();
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    public void updateDB() {
+        
+        try {
+            String databaseURL = "jdbc:ucanaccess://C:/Users/csywa/OneDrive/Desktop/System Project Source/Chiro-App-ADV-SYS-PROJ-f0206791a8aa6767c7ca9e9118731ac6bfa9d26f/MariettaSpineClinicMDB.accdb";
+            Connection con = DriverManager.getConnection(databaseURL) ;
+            System.out.println("Update Connected Connected");
+            Statement stmt = con.createStatement();
+            String sql = "update Chiropractors set ChiroID = '"+getChiroId() + "',"+ 
+                                            " ChiroPW ='"+getChiroPw()+"',"+
+                                            " ChiroFN ='"+getChiroFn()+"',"+  
+                                            " ChiroLN ='"+getChiroLn()+"',"+
+                                            " ChiroPhone ='"+getChiroPhone()+"',"+
+                                            " ChiroEmail = '"+getChiroEmail()+"'" +
+                                            " WHERE ChiroID='"+getChiroId()+"'";                                        
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+            
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+
+    
+    /**************************************
+     * displays information about chiropractor
+     * 
+     ***************************************/
+    
+    public void display() {
+        System.out.println("Chiropractor ID :                   "+ getChiroId());
+        System.out.println("Chiropractor PW :                   "+ getChiroPw());
+        System.out.println("Chiropractor First Name             "+ getChiroFn());
+        System.out.println("Chiropractor Last Name              "+ getChiroLn());
+        System.out.println("Chiropractor Phone                  "+ getChiroPhone());
+        System.out.println("Chiropractor Email                  "+ getChiroEmail());
+        cList.displayList();
+        System.out.println("========================================================");
+
+    }
+    
+    
+    
+    public void getCustomers(String chiroId) {
+        id = chiroId; 
+        String an;
+        CustomerBO c1;
+        AppointmentBO a1;
+        
+        try { 
+                Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+                Connection con = DriverManager.getConnection("jdbc:ucanaccess://C:/Users/csywa/OneDrive/Desktop/System Project Source/Chiro-App-ADV-SYS-PROJ-f0206791a8aa6767c7ca9e9118731ac6bfa9d26f/MariettaSpineClinicMDB.accdb") ;
+                System.out.println("First DB Step con");
+                Statement stmt = con.createStatement();
+                ResultSet rs;
+                System.out.println("DB Connected");
+                String sql = "select * from Appointments";
+                System.out.println(sql);
+                rs = stmt.executeQuery(sql);
+                while(rs.next()) {
+                    an = rs.getString(1);
+                    a1 = new AppointmentBO();
+                    a1.selectDB(an);
+                    if(rs.getString(2).equals(chiroId)){
+                        ResultSet rs2;
+                       String SQL = "select * from Customers where CustID ='"+an+"'";
+                       rs2 = stmt.executeQuery(SQL);
+                       c1 = new CustomerBO();
+                       c1.SelectDB(an);
+                       cList.addPatient(c1);
+                    }   
+                }
+                
+                System.out.println(aList);
+        
+         }
+         catch(Exception e){
+             System.out.println(e);
+         }
+        
+    }
+    
+    
+    
+
+    public static void main(String[] args) {
+        
+        /*
+        ChiroBO c2 = new ChiroBO();
+        c2.insertDB("2600", "2222", "robert", "Johnson", "6781234567", "email@dctor.com");
+        c2.display();
+        */
+        
+        ChiroBO c1 = new ChiroBO();
+        c1.selectDB("2002");
+        c1.getCustomers("2002");
+        c1.display();
+
+
+    }
+
+}
+    
+
